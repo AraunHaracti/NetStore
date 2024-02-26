@@ -1,0 +1,42 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:NetStore.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="NetStore.Views.LoginForm"
+             x:DataType="vm:LoginViewModel">
+  
+  <UserControl.DataContext>
+    <vm:LoginViewModel/>
+  </UserControl.DataContext>
+  
+  <StackPanel Width="336" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <Border Background="#999" CornerRadius="20">
+      <StackPanel>
+        <StackPanel Name="Fields" Margin="20">
+          <StackPanel>
+            <Label Content="Почта"/>
+            <TextBox Name="UsernameTextBox" Watermark="Почта" Text="{Binding Email, Mode=TwoWay}"/>  
+          </StackPanel>
+          <StackPanel>
+            <Label Content="Пароль"/>
+            <TextBox Name="PasswordTextBox" Watermark="Пароль" PasswordChar="*" Text="{Binding Password, Mode=TwoWay}"/>  
+          </StackPanel>
+        </StackPanel>
+        
+        <TextBlock Margin="10" IsVisible="{Binding IsVisibleMessage, Mode=TwoWay}" Text="{Binding Message}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        
+        <StackPanel IsEnabled="{Binding IsActionsEnabled}" Name="Actions" Margin="10" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+          <StackPanel Orientation="Horizontal">
+            <Button Margin="10" Width="130" Content="Войти" Command="{Binding Login}" HorizontalAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button Margin="10" Width="130" Content="Регистрация" Command="{Binding Registration}" HorizontalAlignment="Center" HorizontalContentAlignment="Center"/>  
+          </StackPanel>
+          <Button Margin="10" Width="200" Content="Войти как гость" Command="{Binding Guest}" HorizontalAlignment="Center" HorizontalContentAlignment="Center"/>
+        </StackPanel>
+      </StackPanel>
+    </Border>
+    
+  </StackPanel>
+  
+</UserControl>

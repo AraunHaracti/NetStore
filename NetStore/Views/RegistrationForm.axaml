@@ -1,0 +1,59 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:NetStore.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="NetStore.Views.RegistrationForm"
+             x:DataType="vm:RegistrationViewModel">
+  
+  <UserControl.DataContext>
+    <vm:RegistrationViewModel/>
+  </UserControl.DataContext>
+  
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <StackPanel Width="336" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+      <Border Background="#999" CornerRadius="20">
+        <StackPanel>
+          
+          <StackPanel Name="Fields" Margin="20">
+            <StackPanel>
+              <Label Content="Имя"/>
+              <TextBox Name="FirstNameTextBox" Watermark="Имя" Text="{Binding Name, Mode=TwoWay}"/>  
+            </StackPanel>
+            <StackPanel>
+              <Label Content="Фамилия"/>
+              <TextBox Name="LastNameTextBox" Watermark="Фамилия" Text="{Binding Surname, Mode=TwoWay}"/>  
+            </StackPanel>
+            <StackPanel>
+              <Label Content="Почта"/>
+              <TextBox Name="EmailTextBox" Watermark="Почта" Text="{Binding Email, Mode=TwoWay}"/>
+            </StackPanel>
+            <StackPanel>
+              <Label Content="Пароль"/>
+              <TextBox Name="PasswordTextBox" Watermark="Пароль" PasswordChar="*" Text="{Binding Password, Mode=TwoWay}"/>
+            </StackPanel>
+            <StackPanel Width="">
+              <Label Content="Подтверждение пароля"/>
+              <TextBox Name="PasswordConfirmTextBox" Watermark="Подтверждение пароля" PasswordChar="*" Text="{Binding PasswordConfirm}"/>  
+            </StackPanel>
+            <StackPanel>
+              <Label Content="Дата рождения"/>
+              <DatePicker Name="DateOfBirthDatePicker" SelectedDate="{Binding Birthdate, Mode=TwoWay}"/>
+            </StackPanel>
+          </StackPanel>
+          
+          <TextBlock Margin="10" IsVisible="{Binding IsVisibleMassage, Mode=TwoWay}" Text="{Binding Massage}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          
+          <StackPanel Name="Actions" Margin="10" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button Margin="10" Width="90" Content="Отмена" Command="{Binding Close}" HorizontalAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button Margin="10" Width="180" Content="Зарегистрироваться" Command="{Binding Registration}" HorizontalAlignment="Center" HorizontalContentAlignment="Center"/>
+          </StackPanel>
+          
+        </StackPanel>
+      </Border>
+      
+    </StackPanel>
+  </ScrollViewer>
+  
+</UserControl>

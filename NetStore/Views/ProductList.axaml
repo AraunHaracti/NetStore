@@ -1,0 +1,131 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:NetStore.ViewModels"
+             xmlns:mn="clr-namespace:NetStore"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="NetStore.Views.ProductList"
+             x:DataType="vm:ProductListViewModel">
+  
+  <UserControl.DataContext>
+    <vm:ProductListViewModel/>
+  </UserControl.DataContext>
+  
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="350"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition/>
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="60"/>
+      <RowDefinition/>
+    </Grid.RowDefinitions>
+    
+    <ContentControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Background="#550">
+      <StackPanel Orientation="Horizontal" Margin="5" Background="#9994" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBox Margin="5" Width="450" Watermark="Найти..." Text="{Binding SearchString, Mode=TwoWay}" VerticalContentAlignment="Center"/>
+        <Button Margin="5" Width="70" Content="Поиск" Command="{Binding Search}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+      </StackPanel>
+    </ContentControl>
+    
+    <ContentControl Grid.Row="1" Grid.Column="0" Background="#2a5" MinWidth="200">
+      <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <StackPanel Orientation="Vertical" Margin="5" Background="#256">
+          <StackPanel Orientation="Vertical" Margin="5">
+            <Label Content="Производитель"/>
+            <ComboBox Width="325" ItemsSource="{Binding ManufacturersList, Mode=TwoWay}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Name, Mode=TwoWay}"/>
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+          </StackPanel>
+          <StackPanel Orientation="Vertical" Margin="5">
+            <Label Content="Категория"/>
+            <ComboBox Width="325" ItemsSource="{Binding CategoriesList, Mode=TwoWay}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Name, Mode=TwoWay}"/>
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+          </StackPanel>
+          <StackPanel Orientation="Vertical" Margin="5">
+            <Label Content="Цена"/>
+            <StackPanel Orientation="Horizontal" Spacing="5">
+              <NumericUpDown Width="160" Watermark="От" FormatString="F2" Minimum="0" Value="{Binding PriceFrom, Mode=TwoWay}"/>
+              <NumericUpDown Width="160" Watermark="До" FormatString="F2" Minimum="0" Value="{Binding PriceTo, Mode=TwoWay}"/>  
+            </StackPanel>
+          </StackPanel>
+          <StackPanel Orientation="Vertical" Margin="5">
+            <Label Content="Количество"/>
+            <StackPanel Orientation="Horizontal" Spacing="5">
+              <NumericUpDown Width="160" Watermark="От" FormatString="F0" Minimum="0" Value="{Binding QuantityFrom, Mode=TwoWay}"/>
+              <NumericUpDown Width="160" Watermark="До" FormatString="F0" Minimum="0" Value="{Binding QuantityTo, Mode=TwoWay}"/>  
+            </StackPanel>
+          </StackPanel>
+          <StackPanel HorizontalAlignment="Center" Margin="5">
+            <Button Content="Применить фильтр" Command="{Binding Filter}"/>
+          </StackPanel>
+        </StackPanel>
+      </ScrollViewer>
+    </ContentControl>
+    
+    <GridSplitter Grid.Column="1" Grid.Row="1" ResizeDirection="Columns" Background="#a0a"/>
+    
+    <ContentControl Grid.Row="1" Grid.Column="2" Background="#002">
+      <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto" Background="#200">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
+          <Grid Margin="10" Background="#030">
+            <ListBox ItemsSource="{Binding ListProduct}" Background="#004">
+              <ListBox.ItemTemplate>
+                <DataTemplate>
+                  <Border Background="#a00" CornerRadius="10">
+                    <Grid Margin="10">
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                      </Grid.ColumnDefinitions>
+                      <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                      </Grid.RowDefinitions>
+                      <TextBlock Width="500" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" FontSize="20" FontWeight="Bold" Text="{Binding Name}"></TextBlock>
+                      <TextBlock Width="400" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" FontSize="15" Text="{Binding Description}"></TextBlock>
+                      <TextBlock Width="100" Grid.Row="1" Grid.Column="2" FontSize="17" Text="{Binding Price}"></TextBlock>
+                      <TextBlock Width="100" Grid.Row="2" Grid.Column="2" FontSize="17" Text="{Binding Quantity}"></TextBlock>
+                      <TextBlock Width="200" Grid.Row="2" Grid.Column="0" FontSize="15" Text="{Binding CategoryId}"></TextBlock>
+                      <TextBlock Width="200" Grid.Row="2" Grid.Column="1" FontSize="15" Text="{Binding ManufacturerId}"></TextBlock>
+                    </Grid>
+                  </Border>
+                </DataTemplate>
+              </ListBox.ItemTemplate>
+            </ListBox>
+          </Grid>
+          <StackPanel Orientation="Horizontal" Spacing="5" VerticalAlignment="Bottom" Margin="10">
+
+            <Button Content="&lt;&lt;" Command="{Binding PaginateList}" CommandParameter="{x:Static mn:PaginationCommand.First}"/>
+            <Button Content="&lt;" Command="{Binding PaginateList}" CommandParameter="{x:Static mn:PaginationCommand.Previous}"/>  
+          
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
+              <Run Text="{Binding CurrentPage}"/>
+              <Run Text="/"/>
+              <Run Text="{Binding TotalPage}"/>
+            </TextBlock>
+            
+            <Button Content="&gt;" Command="{Binding PaginateList}" CommandParameter="{x:Static mn:PaginationCommand.Next}"/>
+            <Button Content="&gt;&gt;" Command="{Binding PaginateList}" CommandParameter="{x:Static mn:PaginationCommand.Last}"/>  
+        
+          </StackPanel>
+        
+        </StackPanel>
+      </ScrollViewer>
+    </ContentControl>
+  </Grid>
+  
+</UserControl>
