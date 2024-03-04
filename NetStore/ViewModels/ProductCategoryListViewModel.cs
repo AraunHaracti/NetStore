@@ -2,22 +2,14 @@
 using System.Collections.Generic;
 using MySqlConnector;
 using NetStore.Models;
+using NetStore.Views;
 using ReactiveUI;
 
 namespace NetStore.ViewModels;
 
 public class ProductCategoryListViewModel : ReactiveObject
 {
-    private string _searchString = String.Empty;
-    public string SearchString
-    {
-        get => _searchString;
-        set
-        {
-            _searchString = value;
-            this.RaisePropertyChanged();
-        }
-    }
+    public string SearchString { get; set; } = String.Empty;
 
     public ProductCategoryListViewModel()
     {
@@ -30,21 +22,24 @@ public class ProductCategoryListViewModel : ReactiveObject
     }
     public void AddItem()
     {
-        throw new NotImplementedException();
+        Config.AddWindow(new WorkWithProductCategoryItem());
     }
     public void EditItem()
     {
-        throw new NotImplementedException();
+        if (SelectedProductCategory == null)
+            return;
+        
+        Config.AddWindow(new WorkWithProductCategoryItem(SelectedProductCategory));
     }
 
-    private List<ProductCategory> _listProduct = new List<ProductCategory>();
+    private List<ProductCategory> _listProductCategories = new List<ProductCategory>();
 
-    public List<ProductCategory> ListProduct
+    public List<ProductCategory> ListProductCategories
     {
-        get => _listProduct;
+        get => _listProductCategories;
         set
         {
-            _listProduct = value;
+            _listProductCategories = value;
             this.RaisePropertyChanged();
         }
     }
@@ -83,17 +78,19 @@ public class ProductCategoryListViewModel : ReactiveObject
     }
     private readonly int _pageSize = 4;
 
+    public ProductCategory SelectedProductCategory { get; set; }
+    
     public void PaginateList(PaginationCommand paginationCommand)
     {
         switch (paginationCommand)
         {
             case PaginationCommand.First: 
                 CurrentPage = 1;
-                ListProduct = Database.ProductCategoryDatabase.GetProductCategories(CurrentPage, _pageSize, _sqlCommand.Clone());
+                ListProductCategories = Database.ProductCategoryDatabase.GetProductCategories(CurrentPage, _pageSize, _sqlCommand.Clone());
                 break;
             case PaginationCommand.Last:
                 CurrentPage = TotalPage;
-                ListProduct = Database.ProductCategoryDatabase.GetProductCategories(CurrentPage, _pageSize, _sqlCommand.Clone());
+                ListProductCategories = Database.ProductCategoryDatabase.GetProductCategories(CurrentPage, _pageSize, _sqlCommand.Clone());
                 break;
             case PaginationCommand.Next: 
                 CurrentPage += 1;
@@ -101,7 +98,7 @@ public class ProductCategoryListViewModel : ReactiveObject
                 {
                     CurrentPage = TotalPage;
                 }
-                ListProduct = Database.ProductCategoryDatabase.GetProductCategories(CurrentPage, _pageSize, _sqlCommand.Clone());
+                ListProductCategories = Database.ProductCategoryDatabase.GetProductCategories(CurrentPage, _pageSize, _sqlCommand.Clone());
                 break;
             case PaginationCommand.Previous: 
                 CurrentPage -= 1;
@@ -109,8 +106,11 @@ public class ProductCategoryListViewModel : ReactiveObject
                 {
                     CurrentPage = 1;
                 }
-                ListProduct = Database.ProductCategoryDatabase.GetProductCategories(CurrentPage, _pageSize, _sqlCommand.Clone());
+                ListProductCategories = Database.ProductCategoryDatabase.GetProductCategories(CurrentPage, _pageSize, _sqlCommand.Clone());
                 break;
         }
+
+        if (TotalPage == 0)
+            CurrentPage = 0;
     }
 }

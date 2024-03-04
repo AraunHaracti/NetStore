@@ -18,6 +18,8 @@ public static class ProductCategoryDatabase
             {
                 MySqlCommand cmd = new MySqlCommand(sqlCommand, dbConnection);
                 cmd.Parameters.AddWithValue("@Name", category.Name);
+                
+                dbConnection.Open();
 
                 int rowsInserted = cmd.ExecuteNonQuery();
                 return rowsInserted > 0;
@@ -25,14 +27,14 @@ public static class ProductCategoryDatabase
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine(e); // TODO: ПЕРЕПИСАТЬ ЛОГИРОВАНИЕ ВО ВСЕЙ ПРОГРАММЕ!!!
             return false;
         }
     }
 
     public static bool ChangeProductCategory(ProductCategory category)
     {
-        string sqlCommand = "UPDATE Product " +
+        string sqlCommand = "UPDATE ProductCategory " +
                             "SET name = @Name " +
                             "WHERE category_id = @CategoryId";
 
@@ -40,12 +42,12 @@ public static class ProductCategoryDatabase
         {
             using (MySqlConnection dbConnection = new MySqlConnection(NetStore.Config.ConnectionStringBuilder.ConnectionString))
             {
-                dbConnection.Open();
-
                 MySqlCommand cmd = new MySqlCommand(sqlCommand, dbConnection);
                 cmd.Parameters.AddWithValue("@Name", category.Name);
                 cmd.Parameters.AddWithValue("@CategoryId", category.CategoryId);
 
+                dbConnection.Open();
+                
                 int rowsUpdated = cmd.ExecuteNonQuery();
                 return rowsUpdated > 0;
             }
@@ -62,13 +64,13 @@ public static class ProductCategoryDatabase
         string sqlCommand = "SELECT category_id, name FROM ProductCategory WHERE 1=1";
 
         if (!string.IsNullOrEmpty(searchQuery))
-            sqlCommand += " AND (@SearchQuery LIKE name)";
+            sqlCommand += " AND (name LIKE @SearchQuery)";
 
         sqlCommand += " ORDER BY name";
         
-                      MySqlCommand cmd = new MySqlCommand(sqlCommand);
+        MySqlCommand cmd = new MySqlCommand(sqlCommand);
         if (!string.IsNullOrEmpty(searchQuery))
-            cmd.Parameters.AddWithValue("@SearchQuery", searchQuery);
+            cmd.Parameters.Add("@SearchQuery", MySqlDbType.VarChar).Value = "%" + searchQuery + "%";
         
         return cmd;
     }
@@ -77,7 +79,7 @@ public static class ProductCategoryDatabase
     {
         int offset = (pageNumber - 1) * pageSize;
 
-        querySelect.CommandText = $"SELECT category_id, name FROM {querySelect.CommandText} LIMIT @PageSize OFFSET @Offset";
+        querySelect.CommandText = $"SELECT category_id, name FROM ({querySelect.CommandText}) qs LIMIT @PageSize OFFSET @Offset";
 
         List<ProductCategory> categories = new List<ProductCategory>();
 
@@ -93,7 +95,7 @@ public static class ProductCategoryDatabase
                 
                 using (MySqlDataReader reader = querySelect.ExecuteReader())
                 {
-                    if (reader.Read())
+                    while (reader.Read())
                     {
                         var category = new ProductCategory()
                         {
@@ -116,7 +118,7 @@ public static class ProductCategoryDatabase
 
     public static int GetTotalProductCategories(MySqlCommand querySelect)
     {
-        querySelect.CommandText = $"SELECT COUNT(*) FROM {querySelect.CommandText}";
+        querySelect.CommandText = $"SELECT COUNT(*) FROM ({querySelect.CommandText}) qs";
 
         try
         {

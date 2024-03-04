@@ -2,15 +2,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:NetStore.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="NetStore.Views.MainMenuApp">
+             x:Class="NetStore.Views.MainMenuApp"
+             x:DataType="vm:MainMenuAppViewModel">
+  <UserControl.DataContext>
+    <vm:MainMenuAppViewModel/>
+  </UserControl.DataContext>
+  
   <StackPanel>
     <StackPanel>
       <Label Content="Товары"/>
       <StackPanel>
-        <Button Content="Товары"/>
-        <Button Content="Производители"/>
-        <Button Content="Категории"/>  
+        <Button Content="Товары" Command="{Binding OpenProducts}"/>
+        <Button Content="Производители" Command="{Binding OpenProductManufacturers}"/>
+        <Button Content="Категории" Command="{Binding OpenProductCategories}"/>  
       </StackPanel>
     </StackPanel>
     

@@ -1,0 +1,22 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:NetStore.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="NetStore.Views.WorkWithProductCategoryItem"
+             x:DataType="vm:WorkWithProductCategoryItemViewModel">
+  <UserControl.DataContext>
+    <vm:WorkWithProductCategoryItemViewModel/>
+  </UserControl.DataContext>
+  <StackPanel>
+    <StackPanel>
+      <Label Content="Название категории"/>
+      <TextBox Text="{Binding CurrentProductCategory.Name}"/>  
+    </StackPanel>
+    <StackPanel>
+      <Button Content="Зафиксировать" Command="{Binding SaveItem}"/>
+      <Button Content="Вернуться" Command="{Binding CloseView}"/>
+    </StackPanel>
+  </StackPanel>
+</UserControl>

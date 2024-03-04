@@ -20,12 +20,12 @@
       <Button Content="Поиск" Command="{Binding Search}"/>
     </StackPanel>
     
-    <StackPanel Orientation="Vertical">
+    <StackPanel Width="600" Height="700" Orientation="Vertical">
       <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <ListBox>
+        <ListBox ItemsSource="{Binding ListProductCategories}" SelectedItem="{Binding SelectedProductCategory}">
           <ListBox.ItemTemplate>
             <DataTemplate>
-              <TextBlock/>
+              <TextBlock Text="{Binding Name}"/>
             </DataTemplate>
           </ListBox.ItemTemplate>
         </ListBox>  

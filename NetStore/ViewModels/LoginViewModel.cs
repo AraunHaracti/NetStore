@@ -62,7 +62,7 @@ public class LoginViewModel : ReactiveObject
             RoleId = UserRoleEnum.Guest 
         };
         
-        Config.AddWindow(new ProductList());
+        Config.AddWindow(new MainMenuApp());
     }
 
     public void Registration()
@@ -78,7 +78,7 @@ public class LoginViewModel : ReactiveObject
             if (user != null)
             {
                 Config.CurrentUser = user;
-                Config.AddWindow(new ProductList());
+                Config.AddWindow(new MainMenuApp());
             }
             else
             {
