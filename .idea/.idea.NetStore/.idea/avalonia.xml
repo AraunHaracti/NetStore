@@ -15,6 +15,7 @@
         <entry key="NetStore/Views/TemplateTestControl.axaml" value="NetStore/NetStore.csproj" />
         <entry key="NetStore/Views/TestControl.axaml" value="NetStore/NetStore.csproj" />
         <entry key="NetStore/Views/WorkWithProductCategoryItem.axaml" value="NetStore/NetStore.csproj" />
+        <entry key="NetStore/Views/WorkWithProductManufacturerItem.axaml" value="NetStore/NetStore.csproj" />
         <entry key="NetStore/Views/asdf.axaml" value="NetStore/NetStore.csproj" />
         <entry key="NetStore/Views/styles.axaml" value="NetStore/NetStore.csproj" />
         <entry key="NetStore/Views/testuc.axaml" value="NetStore/NetStore.csproj" />

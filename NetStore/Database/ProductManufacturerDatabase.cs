@@ -20,6 +20,8 @@ public static class ProductManufacturerDatabase
                 MySqlCommand cmd = new MySqlCommand(sqlCommand, dbConnection);
                 cmd.Parameters.AddWithValue("@Name", manufacturer.Name);
 
+                dbConnection.Open();
+                
                 int rowsInserted = cmd.ExecuteNonQuery();
                 return rowsInserted > 0;
             }
@@ -33,7 +35,7 @@ public static class ProductManufacturerDatabase
     
     public static bool ChangeProductManufacturer(ProductManufacturer manufacturer)
     {
-        string sqlCommand = "UPDATE Product " +
+        string sqlCommand = "UPDATE ProductManufacturer " +
                             "SET name = @Name " +
                             "WHERE manufacturer_id = @ManufacturerId";
 
@@ -44,6 +46,8 @@ public static class ProductManufacturerDatabase
                 MySqlCommand cmd = new MySqlCommand(sqlCommand, dbConnection);
                 cmd.Parameters.AddWithValue("@Name", manufacturer.Name);
                 cmd.Parameters.AddWithValue("@ManufacturerId", manufacturer.ManufacturerId);
+
+                dbConnection.Open();
 
                 int rowsUpdated = cmd.ExecuteNonQuery();
                 return rowsUpdated > 0;
@@ -56,28 +60,28 @@ public static class ProductManufacturerDatabase
         }
     }
     
-    public static string GetQuerySelect(string? searchQuery = null)
+    public static MySqlCommand GetQuerySelect(string? searchQuery = null)
     {
         string sqlCommand = "SELECT manufacturer_id, name FROM ProductManufacturer WHERE 1=1";
 
         if (!string.IsNullOrEmpty(searchQuery))
-            sqlCommand += " AND (@SearchQuery LIKE name)";
+            sqlCommand += " AND (name LIKE @SearchQuery)";
 
         sqlCommand += " ORDER BY name";
         
         MySqlCommand cmd = new MySqlCommand(sqlCommand);
         if (!string.IsNullOrEmpty(searchQuery))
-            cmd.Parameters.AddWithValue("@SearchQuery", searchQuery);
+            cmd.Parameters.Add("@SearchQuery", MySqlDbType.VarChar).Value = "%" + searchQuery + "%";
         
-        return cmd.CommandText;
+        return cmd;
     }
     
-    public static List<ProductManufacturer> GetProductManufacturers(int pageNumber, int pageSize, string querySelect)
+    public static List<ProductManufacturer> GetProductManufacturers(int pageNumber, int pageSize, MySqlCommand querySelect)
     {
         int offset = (pageNumber - 1) * pageSize;
 
-        string sqlCommand = "SELECT manufacturer_id, name FROM @QuerySelect " +
-                            "LIMIT @PageSize OFFSET @Offset";
+        querySelect.CommandText = $"SELECT manufacturer_id, name FROM ({querySelect.CommandText}) qs " +
+                                  "LIMIT @PageSize OFFSET @Offset";
 
         List<ProductManufacturer> manufacturers = new List<ProductManufacturer>();
 
@@ -85,14 +89,15 @@ public static class ProductManufacturerDatabase
         {
             using (MySqlConnection dbConnection = new MySqlConnection(NetStore.Config.ConnectionStringBuilder.ConnectionString))
             {
-                MySqlCommand cmd = new MySqlCommand(sqlCommand, dbConnection);
-                cmd.Parameters.AddWithValue("@QuerySelect", querySelect);
-                cmd.Parameters.AddWithValue("@PageSize", pageSize);
-                cmd.Parameters.AddWithValue("@Offset", offset);
+                querySelect.Connection = dbConnection;
+                querySelect.Parameters.AddWithValue("@PageSize", pageSize);
+                querySelect.Parameters.AddWithValue("@Offset", offset);
+                
+                dbConnection.Open();
 
-                using (MySqlDataReader reader = cmd.ExecuteReader())
+                using (MySqlDataReader reader = querySelect.ExecuteReader())
                 {
-                    if (reader.Read())
+                    while (reader.Read())
                     {
                         var manufacturer = new ProductManufacturer()
                         {
@@ -113,17 +118,19 @@ public static class ProductManufacturerDatabase
         return manufacturers;
     }
     
-    public static int GetTotalManufacturers(string querySelect)
+    public static int GetTotalProductManufacturers(MySqlCommand querySelect)
     {
-        string sqlCommand = "SELECT COUNT(*) FROM @QuerySelect";
+        querySelect.CommandText = $"SELECT COUNT(*) FROM ({querySelect.CommandText}) qs";
 
         try
         {
             using (MySqlConnection dbConnection = new MySqlConnection(NetStore.Config.ConnectionStringBuilder.ConnectionString))
             {
-                MySqlCommand cmd = new MySqlCommand(sqlCommand, dbConnection);
-                cmd.Parameters.AddWithValue("@QuerySelect", querySelect);
-                int total = Convert.ToInt32(cmd.ExecuteScalar());
+                querySelect.Connection = dbConnection;
+                
+                dbConnection.Open();
+                
+                int total = Convert.ToInt32(querySelect.ExecuteScalar());
                 return total;
             }
         }

@@ -16,8 +16,7 @@ public class WorkWithProductCategoryItemViewModel : ReactiveObject
             this.RaisePropertyChanged();
         }
     }
-
-
+    
     public void SaveItem()
     {
         if (CurrentProductCategory.CategoryId != 0)
