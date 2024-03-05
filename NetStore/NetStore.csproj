@@ -23,4 +23,56 @@
         <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.2" />
         <PackageReference Include="MySqlConnector" Version="2.3.5" />
     </ItemGroup>
+
+
+    <ItemGroup>
+      <Folder Include="ViewModels\Cart\" />
+      <Folder Include="ViewModels\Order\" />
+      <Folder Include="Views\Cart\" />
+      <Folder Include="Views\Order\" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <Compile Update="Views\MainMenu\LoginForm.axaml.cs">
+        <DependentUpon>LoginForm.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Product\ProductCategoryList.axaml.cs">
+        <DependentUpon>ProductCategoryList.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Product\ProductList.axaml.cs">
+        <DependentUpon>ProductList.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Product\ProductManufacturerList.axaml.cs">
+        <DependentUpon>ProductManufacturerList.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainMenu\RegistrationForm.axaml.cs">
+        <DependentUpon>RegistrationForm.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainMenu\MainMenuApp.axaml.cs">
+        <DependentUpon>MainMenuApp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\User\UserList.axaml.cs">
+        <DependentUpon>UserList.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Product\WorkWithProductCategoryItem.axaml.cs">
+        <DependentUpon>WorkWithProductCategoryItem.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Product\WorkWithProductManufacturerItem.axaml.cs">
+        <DependentUpon>WorkWithProductManufacturerItem.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\User\WorkWithUserItem.axaml.cs">
+        <DependentUpon>WorkWithUserItem.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
 </Project>
