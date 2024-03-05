@@ -1,0 +1,57 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:NetStore.ViewModels"
+             xmlns:mn="clr-namespace:NetStore"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="NetStore.Views.UserList"
+             x:DataType="vm:UserListViewModel">
+    <UserControl.DataContext>
+        <vm:UserListViewModel/>
+    </UserControl.DataContext>
+    
+    <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Horizontal">
+            <Button Content="Добавить" Command="{Binding AddItem}"/>
+            <Button Content="Радектировать" Command="{Binding EditItem}"/>
+            <TextBox Watermark="Найти..." Text="{Binding SearchString}"/>
+            <Button Content="Поиск" Command="{Binding Search}"/>
+        </StackPanel>
+    
+        <StackPanel Width="600" Height="700" Orientation="Vertical">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ListBox ItemsSource="{Binding ListUsers}" SelectedItem="{Binding SelectedUser}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="{Binding Name}"/>
+                                <TextBlock Text="{Binding Surname}"/>
+                                <TextBlock Text="{Binding Email}"/>
+                                <TextBlock Text="{Binding Password}"/>
+                                <TextBlock Text="{Binding Birthdate}"/>
+                                <TextBlock Text="{Binding RoleId}"/> 
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>  
+            </ScrollViewer>
+            <StackPanel Orientation="Horizontal" Spacing="5" VerticalAlignment="Bottom" Margin="10">
+
+                <Button Content="&lt;&lt;" Command="{Binding PaginateList}" CommandParameter="{x:Static mn:PaginationCommand.First}"/>
+                <Button Content="&lt;" Command="{Binding PaginateList}" CommandParameter="{x:Static mn:PaginationCommand.Previous}"/>  
+          
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
+                    <Run Text="{Binding CurrentPage}"/>
+                    <Run Text="/"/>
+                    <Run Text="{Binding TotalPage}"/>
+                </TextBlock>
+            
+                <Button Content="&gt;" Command="{Binding PaginateList}" CommandParameter="{x:Static mn:PaginationCommand.Next}"/>
+                <Button Content="&gt;&gt;" Command="{Binding PaginateList}" CommandParameter="{x:Static mn:PaginationCommand.Last}"/>  
+        
+            </StackPanel>
+        
+        </StackPanel>
+    </StackPanel>
+</UserControl>

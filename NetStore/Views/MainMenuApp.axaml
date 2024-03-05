@@ -23,7 +23,7 @@
     <StackPanel>
       <Label Content="Пользователи"/>
       <StackPanel>
-        <Button Content="Пользователи"/>
+        <Button Content="Пользователи" Command="{Binding OpenUsers}"/>
       </StackPanel>
     </StackPanel>
     

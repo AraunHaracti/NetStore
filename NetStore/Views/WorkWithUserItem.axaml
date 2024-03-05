@@ -1,0 +1,43 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:NetStore.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="NetStore.Views.WorkWithUserItem"
+             x:DataType="vm:WorkWithUserItemViewModel">
+    <UserControl.DataContext>
+        <vm:WorkWithUserItemViewModel/>
+    </UserControl.DataContext>
+    
+    <StackPanel Orientation="Vertical">
+        <StackPanel>
+            <Label Content="Имя"/>
+            <TextBox Text="{Binding CurrentUser.Name}"/>
+        </StackPanel>
+        <StackPanel>
+            <Label Content="Фамилия"/>
+            <TextBox Text="{Binding CurrentUser.Surname}"/>
+        </StackPanel>
+        <StackPanel>
+            <Label Content="Электронная почта"/>
+            <TextBox Text="{Binding CurrentUser.Email}"/>
+        </StackPanel>
+        <StackPanel>
+            <Label Content="Пароль"/>
+            <TextBox Text="{Binding CurrentUser.Password}"/>
+        </StackPanel>
+        <StackPanel>
+            <Label Content="Дата рождения"/>
+            <DatePicker SelectedDate="{Binding CurrentUser.Birthdate}"/>
+        </StackPanel>
+        <StackPanel>
+            <Label Content="Роль"/>
+            <ComboBox ItemsSource="{Binding UserRoleList}" SelectedItem="{Binding Role}"/>
+        </StackPanel>
+        <StackPanel>
+            <Button Content="Зафиксиовать" Command="{Binding SaveItem}"/>
+            <Button Content="Отмена" Command="{Binding CloseView}"/>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

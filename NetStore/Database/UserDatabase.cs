@@ -126,6 +126,8 @@ public static class UserDatabase
                 cmd.Parameters.AddWithValue("@Birthdate", user.Birthdate);
                 cmd.Parameters.AddWithValue("@UserId", user.UserId);
 
+                dbConnection.Open();
+                
                 int rowsUpdated = cmd.ExecuteNonQuery();
                 return rowsUpdated > 0;
             }
@@ -172,13 +174,13 @@ public static class UserDatabase
         Birthdate
     }
     
-    public static string GetQuerySelect(string? searchQuery = null, UserRoleEnum? roleEnum = null, 
+    public static MySqlCommand GetQuerySelect(string? searchQuery = null, UserRoleEnum? roleEnum = null, 
         DateTimeOffset? birthdateFrom = null, DateTimeOffset? birthdateTo = null, UserFieldEnum? orderBy = null)
     {
         string sqlCommand = "SELECT user_id, name, surname, email, role_id, birthdate FROM User WHERE 1=1";
 
         if (!string.IsNullOrEmpty(searchQuery))
-            sqlCommand += " AND (@SearchQuery LIKE name OR @SearchQuery LIKE surname OR @SearchQuery LIKE email)";
+            sqlCommand += " AND (name LIKE @SearchQuery OR surname LIKE @SearchQuery OR email LIKE @SearchQuery)";
         if (roleEnum != null)
             sqlCommand += " AND role_id = @Role";
         if (birthdateFrom != null)
@@ -198,7 +200,7 @@ public static class UserDatabase
 
         MySqlCommand cmd = new MySqlCommand(sqlCommand);
         if (!string.IsNullOrEmpty(searchQuery))
-            cmd.Parameters.AddWithValue("@SearchQuery", searchQuery);
+            cmd.Parameters.Add("@SearchQuery", MySqlDbType.VarChar).Value = "%" + searchQuery + "%";
         if (roleEnum != null)
             cmd.Parameters.AddWithValue("@Role", (int)roleEnum);
         if (birthdateFrom != null)
@@ -206,16 +208,16 @@ public static class UserDatabase
         if (birthdateTo != null)
             cmd.Parameters.AddWithValue("@BirthdateTO", birthdateTo.Value.ToString("yyyy-MM-dd"));
         
-        return cmd.CommandText;
+        return cmd;
     }
     
-    public static List<User> GetUsers(int pageNumber, int pageSize, string querySelect)
+    public static List<User> GetUsers(int pageNumber, int pageSize, MySqlCommand querySelect)
     {
         int offset = (pageNumber - 1) * pageSize;
 
-        string sqlCommand = "SELECT user_id, name, surname, email, role_id, birthdate FROM @QuerySelect " +
-                            "LIMIT @PageSize " +
-                            "OFFSET @Offset";
+        querySelect .CommandText = $"SELECT user_id, name, surname, email, role_id, birthdate FROM ({querySelect.CommandText}) qs " +
+                             "LIMIT @PageSize " +
+                             "OFFSET @Offset";
 
         List<User> users = new List<User>();
 
@@ -223,14 +225,13 @@ public static class UserDatabase
         {
             using (MySqlConnection dbConnection = new MySqlConnection(NetStore.Config.ConnectionStringBuilder.ConnectionString))
             {
-                MySqlCommand cmd = new MySqlCommand(sqlCommand, dbConnection);
-                cmd.Parameters.AddWithValue("@QuerySelect", querySelect);
-                cmd.Parameters.AddWithValue("@PageSize", pageSize);
-                cmd.Parameters.AddWithValue("@Offset", offset);
+                querySelect.Connection = dbConnection;
+                querySelect.Parameters.AddWithValue("@PageSize", pageSize);
+                querySelect.Parameters.AddWithValue("@Offset", offset);
 
                 dbConnection.Open();
 
-                using (MySqlDataReader reader = cmd.ExecuteReader())
+                using (MySqlDataReader reader = querySelect.ExecuteReader())
                 {
                     while (reader.Read())
                     {
@@ -257,20 +258,19 @@ public static class UserDatabase
         return users;
     }
     
-    public static int GetTotalUsers(string querySelect)
+    public static int GetTotalUsers(MySqlCommand querySelect)
     {
-        string sqlCommand = "SELECT COUNT(*) FROM @QuerySelect";
+        querySelect .CommandText = $"SELECT COUNT(*) FROM ({querySelect.CommandText}) qs";
 
         try
         {
             using (MySqlConnection dbConnection = new MySqlConnection(NetStore.Config.ConnectionStringBuilder.ConnectionString))
             {
-                MySqlCommand cmd = new MySqlCommand(sqlCommand, dbConnection);
-                cmd.Parameters.AddWithValue("@QuerySelect", querySelect);
+                querySelect.Connection = dbConnection;
 
                 dbConnection.Open();
 
-                int totalCount = Convert.ToInt32(cmd.ExecuteScalar());
+                int totalCount = Convert.ToInt32(querySelect.ExecuteScalar());
                 return totalCount;
             }
         }

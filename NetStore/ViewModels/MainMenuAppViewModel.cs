@@ -18,4 +18,9 @@ public class MainMenuAppViewModel
     {
         Config.AddWindow(new ProductCategoryList());
     }
+
+    public void OpenUsers()
+    {
+        Config.AddWindow(new UserList());
+    }
 }
