@@ -18,6 +18,8 @@
       <Button Content="Радектировать" Command="{Binding EditItem}"/>
       <TextBox Watermark="Найти..." Text="{Binding SearchString}"/>
       <Button Content="Поиск" Command="{Binding Search}"/>
+      <Button Content="Выбрать" Command="{Binding SelectElement}"/>
+      <Button Content="Назад" Command="{Binding CloseView}"/>
     </StackPanel>
     
     <StackPanel Width="600" Height="700" Orientation="Vertical">

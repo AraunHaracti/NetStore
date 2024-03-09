@@ -41,7 +41,7 @@ public static class UserDatabase
     {
         string sqlCommand = "SELECT user_id, name, surname, email, password, birthdate, role_id " +
                             "FROM User " +
-                            "WHERE email = @Email AND password = @Password " +
+                            "WHERE email LIKE @Email AND password LIKE @Password " +
                             "LIMIT 1";
 
         try
@@ -49,8 +49,8 @@ public static class UserDatabase
             using (MySqlConnection dbConnection = new MySqlConnection(NetStore.Config.ConnectionStringBuilder.ConnectionString))
             {
                 MySqlCommand cmd = new MySqlCommand(sqlCommand, dbConnection);
-                cmd.Parameters.AddWithValue("@Email", email);
-                cmd.Parameters.AddWithValue("@Password", password);
+                cmd.Parameters.Add("@Email", MySqlDbType.VarChar).Value = email;
+                cmd.Parameters.Add("@Password", MySqlDbType.VarChar).Value = password;
                 
                 dbConnection.Open();
 

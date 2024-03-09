@@ -1,4 +1,5 @@
-﻿using NetStore.Models;
+﻿using NetStore.Database;
+using NetStore.Models;
 using ReactiveUI;
 
 namespace NetStore.ViewModels;
@@ -31,7 +32,7 @@ public class WorkWithProductCategoryItemViewModel : ReactiveObject
             if (!isInsert)
                 return;
         }
-        
+
         CloseView();
     }
 

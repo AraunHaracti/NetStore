@@ -7,8 +7,28 @@ namespace NetStore.ViewModels;
 
 public class LoginViewModel : ReactiveObject
 {
-    public string Email { get; set; }
-    public string Password { get; set; }
+    private string _email = String.Empty;
+    private string _password = String.Empty;
+
+    public string Email
+    {
+        get => _email;
+        set
+        {
+            _email = value;
+            this.RaisePropertyChanged();
+        }
+    }
+
+    public string Password
+    {
+        get => _password;
+        set
+        {
+            _password = value;
+            this.RaisePropertyChanged();
+        }
+    }
 
     public bool IsVisibleMessage { get => _isVisibleMessage;
         set { _isVisibleMessage = value; this.RaisePropertyChanged(); }
@@ -62,28 +82,38 @@ public class LoginViewModel : ReactiveObject
             RoleId = UserRoleEnum.Guest 
         };
         
-        Config.AddWindow(new MainMenuApp());
+        Config.AddWindow(new ProductList());
+        
+        FirstState();
     }
 
     public void Registration()
     {
         Config.AddWindow(new RegistrationForm());
+        
+        FirstState();
     }
 
     public void Login()
     {
-        if (!(string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password)))
+        User? user = Database.UserDatabase.GetUser(Email, Password);
+        if (user != null)
         {
-            User? user = Database.UserDatabase.GetUser(Email, Password);
-            if (user != null)
-            {
-                Config.CurrentUser = user;
-                Config.AddWindow(new MainMenuApp());
-            }
-            else
-            {
-                Message = "Email or password is incorrect";
-            }
+            Config.CurrentUser = user;
+            Config.AddWindow(new MainMenuApp());
+
+            FirstState();
         }
+        else
+        {
+            Message = "Email or password is incorrect";
+        }
+    }
+
+    private void FirstState()
+    {
+        Message = String.Empty;
+        Email = String.Empty;
+        Password = String.Empty;
     }
 }

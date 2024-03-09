@@ -1,0 +1,30 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:NetStore.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="NetStore.Views.Product.WorkWithProductItem"
+             x:DataType="vm:WorkWithProductItemViewModel">
+  <UserControl.DataContext>
+    <vm:WorkWithProductItemViewModel/>
+  </UserControl.DataContext>
+  
+  <StackPanel Orientation="Vertical">
+    <TextBox Watermark="Имя" Text="{Binding Name}"/>
+    <TextBox Watermark="Описание" Text="{Binding Description}"/>
+    <NumericUpDown Watermark="Цена" Value="{Binding Price}" FormatString="0.00" Increment="1.00" Minimum="0"/>
+    <NumericUpDown Watermark="Количество" Value="{Binding Value}" FormatString="0" Increment="1" Minimum="0"/>
+    <StackPanel>
+      <Label Content="Категория"/>
+      <ComboBox ItemsSource="{Binding ListCategories}" SelectedItem="{Binding SelectedCategory}"/>  
+    </StackPanel>
+    <StackPanel>
+      <Label Content="Производитель"/>
+      <ComboBox ItemsSource="{Binding ListManufacturers}" SelectedItem="{Binding SelectedManufacturer}"/>  
+    </StackPanel>
+    <Button Content="Зафиксировать" Command="{Binding SaveItem}"/>
+    <Button Content="Отмена" Command="{Binding CloseView}"/>
+  </StackPanel>
+  
+</UserControl>

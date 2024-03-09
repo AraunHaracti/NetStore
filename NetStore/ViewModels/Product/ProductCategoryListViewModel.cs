@@ -80,6 +80,19 @@ public class ProductCategoryListViewModel : ReactiveObject
 
     public ProductCategory SelectedProductCategory { get; set; }
     
+    public event EventHandler<ProductCategory> ElementSelected;
+
+    public void SelectElement()
+    {
+        ElementSelected?.Invoke(this, SelectedProductCategory);
+        CloseView();
+    }
+
+    public void CloseView()
+    {
+        Config.SubWindow();
+    }
+    
     public void PaginateList(PaginationCommand paginationCommand)
     {
         switch (paginationCommand)

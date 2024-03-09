@@ -23,4 +23,9 @@ public class MainMenuAppViewModel
     {
         Config.AddWindow(new UserList());
     }
+
+    public void CloseView()
+    {
+        Config.SubWindow();
+    }
 }

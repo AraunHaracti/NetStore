@@ -34,5 +34,9 @@
       </StackPanel>
     </StackPanel>
     
+    <StackPanel>
+      <Button Content="Выход" Command="{Binding CloseView}"/>
+    </StackPanel>
+    
   </StackPanel>
 </UserControl>

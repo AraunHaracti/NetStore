@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using Avalonia.Controls;
+using DynamicData;
 using MySqlConnector;
 using NetStore.Models;
+using NetStore.Views;
 
 namespace NetStore;
 
 public static class Config
 {
-    public static MySqlConnectionStringBuilder ConnectionStringBuilder_ = new MySqlConnectionStringBuilder()
+    public static MySqlConnectionStringBuilder ConnectionStringBuilder = new MySqlConnectionStringBuilder()
     {
         Server = "192.168.0.13",
         Port = 3306,
@@ -17,16 +19,7 @@ public static class Config
         UserID = "root",
         Password = "rtc48EN"
     };
-    
-    public static MySqlConnectionStringBuilder ConnectionStringBuilder = new MySqlConnectionStringBuilder()
-    {
-        Server = "2.tcp.eu.ngrok.io",
-        Port = 15256,
-        Database = "net-store",
-        UserID = "root",
-        Password = "rtc48EN"
-    };
-    
+
     private static List<ContentControl> Windows { get; set; } = new List<ContentControl>();
     
     public static User CurrentUser { get; set; }

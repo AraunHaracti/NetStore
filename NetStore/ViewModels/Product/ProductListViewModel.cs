@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using MySqlConnector;
 using NetStore.Models;
+using NetStore.Views;
+using NetStore.Views.Product;
 using ReactiveUI;
 
 namespace NetStore.ViewModels;
@@ -79,7 +81,7 @@ public class ProductListViewModel : ReactiveObject
 
     private void GetProductsFromDb()
     {
-        _sqlCommand = Database.ProductDatabase.GetQuerySelect(searchQuery: SearchString, priceFrom: PriceFrom, priceTo: PriceTo, quantityFrom: QuantityFrom, quantityTo: QuantityTo);
+        _sqlCommand = Database.ProductDatabase.GetQuerySelect(searchQuery: SearchString, priceFrom: PriceFrom, priceTo: PriceTo, quantityFrom: QuantityFrom, quantityTo: QuantityTo, category: SelectedProductCategoryItem);
         TotalPage = (int) Math.Ceiling(Database.ProductDatabase.GetTotalProducts(_sqlCommand.Clone()) / (decimal)_pageSize);
         PaginateList(PaginationCommand.First);
     }
@@ -152,6 +154,47 @@ public class ProductListViewModel : ReactiveObject
                 ListProduct = Database.ProductDatabase.GetProducts(CurrentPage, _pageSize, _sqlCommand.Clone());
                 break;
         }
+    }
+
+    public void CloseView()
+    {
+        Config.SubWindow();
+    }
+
+    public Product SelectedProductItem { get; set; }
+    
+    public void AddItem()
+    {
+        Config.AddWindow(new WorkWithProductItem());
+    }
+    
+    public void EditItem()
+    {
+        Config.AddWindow(new WorkWithProductItem(SelectedProductItem));
+    }
+
+    private ProductCategory _selectedProductCategoryItem = null;
+
+    public ProductCategory SelectedProductCategoryItem
+    {
+        get => _selectedProductCategoryItem;
+        set
+        {
+            _selectedProductCategoryItem = value;
+            this.RaisePropertyChanged();
+        }
+    }
+
+    public void SelectProductCategory()
+    {
+        var window = new ProductCategoryList();
+        (window.DataContext as ProductCategoryListViewModel).ElementSelected +=
+            (sender, category) =>
+            {
+                SelectedProductCategoryItem = category;
+                GetProductsFromDb();
+            };
+        Config.AddWindow(window);
     }
     
 }

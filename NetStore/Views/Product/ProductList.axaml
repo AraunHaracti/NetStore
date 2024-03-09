@@ -45,13 +45,7 @@
           </StackPanel>
           <StackPanel Orientation="Vertical" Margin="5">
             <Label Content="Категория"/>
-            <ComboBox Width="325" ItemsSource="{Binding CategoriesList, Mode=TwoWay}">
-              <ComboBox.ItemTemplate>
-                <DataTemplate>
-                  <TextBlock Text="{Binding Name, Mode=TwoWay}"/>
-                </DataTemplate>
-              </ComboBox.ItemTemplate>
-            </ComboBox>
+            <Button Width="325" Content="{Binding SelectedProductCategoryItem.Name}" Command="{Binding SelectProductCategory}"/>
           </StackPanel>
           <StackPanel Orientation="Vertical" Margin="5">
             <Label Content="Цена"/>
@@ -70,6 +64,11 @@
           <StackPanel HorizontalAlignment="Center" Margin="5">
             <Button Content="Применить фильтр" Command="{Binding Filter}"/>
           </StackPanel>
+          <StackPanel HorizontalAlignment="Center" Margin="10">
+            <Button Content="Добавить" Command="{Binding AddItem}"/>
+            <Button Content="Редактировать" Command="{Binding EditItem}"/>
+            <Button Content="Назад" Command="{Binding CloseView}"/>
+          </StackPanel>
         </StackPanel>
       </ScrollViewer>
     </ContentControl>
@@ -80,7 +79,7 @@
       <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto" Background="#200">
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
           <Grid Margin="10" Background="#030">
-            <ListBox ItemsSource="{Binding ListProduct}" Background="#004">
+            <ListBox ItemsSource="{Binding ListProduct}" SelectedItem="{Binding SelectedProductItem}" Background="#004">
               <ListBox.ItemTemplate>
                 <DataTemplate>
                   <Border Background="#a00" CornerRadius="10">

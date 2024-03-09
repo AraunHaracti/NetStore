@@ -38,16 +38,8 @@
         <DependentUpon>LoginForm.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Product\ProductCategoryList.axaml.cs">
-        <DependentUpon>ProductCategoryList.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
       <Compile Update="Views\Product\ProductList.axaml.cs">
         <DependentUpon>ProductList.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\Product\ProductManufacturerList.axaml.cs">
-        <DependentUpon>ProductManufacturerList.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
       <Compile Update="Views\MainMenu\RegistrationForm.axaml.cs">
@@ -62,16 +54,24 @@
         <DependentUpon>UserList.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Product\WorkWithProductCategoryItem.axaml.cs">
+      <Compile Update="Views\User\WorkWithUserItem.axaml.cs">
+        <DependentUpon>WorkWithUserItem.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Product\ProductCategory\ProductCategoryList.axaml.cs">
+        <DependentUpon>ProductCategoryList.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Product\ProductCategory\WorkWithProductCategoryItem.axaml.cs">
         <DependentUpon>WorkWithProductCategoryItem.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Product\WorkWithProductManufacturerItem.axaml.cs">
-        <DependentUpon>WorkWithProductManufacturerItem.axaml</DependentUpon>
+      <Compile Update="Views\Product\ProductManufacturer\ProductManufacturerList.axaml.cs">
+        <DependentUpon>ProductManufacturerList.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\User\WorkWithUserItem.axaml.cs">
-        <DependentUpon>WorkWithUserItem.axaml</DependentUpon>
+      <Compile Update="Views\Product\ProductManufacturer\WorkWithProductManufacturerItem.axaml.cs">
+        <DependentUpon>WorkWithProductManufacturerItem.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>

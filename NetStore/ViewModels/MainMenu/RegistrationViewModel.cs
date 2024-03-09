@@ -108,8 +108,7 @@ public class RegistrationViewModel : ReactiveObject
 
     private bool IsValidPassword()
     {
-        string regexString = @"^[A-Za-z\d@$!%*?&]{8,}$";
-        // string regexString = @"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$";
+        string regexString = @"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$";
         Regex regex = new Regex(regexString);
         return regex.IsMatch(Password);
     }
