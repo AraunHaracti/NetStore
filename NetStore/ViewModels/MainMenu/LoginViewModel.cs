@@ -9,6 +9,9 @@ public class LoginViewModel : ReactiveObject
 {
     private string _email = String.Empty;
     private string _password = String.Empty;
+    private bool _isVisibleMessage = false;
+    private bool _isActionsEnabled = true;
+    private string _message = String.Empty;
 
     public string Email
     {
@@ -31,14 +34,13 @@ public class LoginViewModel : ReactiveObject
     }
 
     public bool IsVisibleMessage { get => _isVisibleMessage;
-        set { _isVisibleMessage = value; this.RaisePropertyChanged(); }
+        set
+        {
+            _isVisibleMessage = value; 
+            this.RaisePropertyChanged();
+        }
     }
-
-    private bool _isVisibleMessage = false;
-
-
-    private bool _isActionsEnabled = true;
-
+    
     public bool IsActionsEnabled
     {
         get => _isActionsEnabled;
@@ -47,16 +49,6 @@ public class LoginViewModel : ReactiveObject
             _isActionsEnabled = value;
             this.RaisePropertyChanged();
         }
-    }
-    
-    public LoginViewModel()
-    {
-        if (!Database.ConnectionDatabase.CheckConnection())
-        {
-            IsActionsEnabled = false;
-            Message = "Connction error";
-        }
-        
     }
     
     public string Message 
@@ -69,9 +61,17 @@ public class LoginViewModel : ReactiveObject
             this.RaisePropertyChanged();
         } 
     }
-
-    private string _message = String.Empty;
-
+    
+    public LoginViewModel()
+    {
+        if (!Database.ConnectionDatabase.CheckConnection())
+        {
+            IsActionsEnabled = false;
+            Message = "Connction error";
+        }
+        
+    }
+    
     public void Guest()
     {
         Config.CurrentUser = new User()
@@ -106,7 +106,7 @@ public class LoginViewModel : ReactiveObject
         }
         else
         {
-            Message = "Email or password is incorrect";
+            Message = "Почта или пароль неверны!";
         }
     }
 

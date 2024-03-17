@@ -39,12 +39,11 @@ public static class Config
 
     public static ContentControl? GetLastWindow()
     {
-        if (Windows.Count > 0)
+        if (!(Windows.Count > 0))
         {
-            return Windows[^1];
+            Windows.Add(new LoginForm());
         }
-
-        return null;
+        return Windows[^1];
     }
 
     private static void OnListUpdate()

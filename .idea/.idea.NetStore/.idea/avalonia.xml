@@ -8,11 +8,13 @@
         <entry key="NetStore/Views/LoginForm.axaml" value="NetStore/NetStore.csproj" />
         <entry key="NetStore/Views/MainMenu/LoginForm.axaml" value="NetStore/NetStore.csproj" />
         <entry key="NetStore/Views/MainMenu/MainMenuApp.axaml" value="NetStore/NetStore.csproj" />
+        <entry key="NetStore/Views/MainMenu/RegistrationForm.axaml" value="NetStore/NetStore.csproj" />
         <entry key="NetStore/Views/MainMenuApp.axaml" value="NetStore/NetStore.csproj" />
         <entry key="NetStore/Views/MainWindow.axaml" value="NetStore/NetStore.csproj" />
         <entry key="NetStore/Views/Product/ProductCategory/ProductCategoryList.axaml" value="NetStore/NetStore.csproj" />
         <entry key="NetStore/Views/Product/ProductCategory/ProductCategoryListSelectItem.axaml" value="NetStore/NetStore.csproj" />
         <entry key="NetStore/Views/Product/ProductList.axaml" value="NetStore/NetStore.csproj" />
+        <entry key="NetStore/Views/Product/ProductManufacturer/ProductManufacturerList.axaml" value="NetStore/NetStore.csproj" />
         <entry key="NetStore/Views/Product/ProductManufacturerList.axaml" value="NetStore/NetStore.csproj" />
         <entry key="NetStore/Views/Product/WorkWithProductItem.axaml" value="NetStore/NetStore.csproj" />
         <entry key="NetStore/Views/ProductCategoryList.axaml" value="NetStore/NetStore.csproj" />

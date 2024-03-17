@@ -81,7 +81,7 @@ public class ProductListViewModel : ReactiveObject
 
     private void GetProductsFromDb()
     {
-        _sqlCommand = Database.ProductDatabase.GetQuerySelect(searchQuery: SearchString, priceFrom: PriceFrom, priceTo: PriceTo, quantityFrom: QuantityFrom, quantityTo: QuantityTo, category: SelectedProductCategoryItem);
+        _sqlCommand = Database.ProductDatabase.GetQuerySelect(searchQuery: SearchString, priceFrom: PriceFrom, priceTo: PriceTo, quantityFrom: QuantityFrom, quantityTo: QuantityTo, category: SelectedProductCategoryItem, manufacturer: SelectedProductManufacturerItem);
         TotalPage = (int) Math.Ceiling(Database.ProductDatabase.GetTotalProducts(_sqlCommand.Clone()) / (decimal)_pageSize);
         PaginateList(PaginationCommand.First);
     }
@@ -97,9 +97,6 @@ public class ProductListViewModel : ReactiveObject
         QuantityTo = null;
         GetProductsFromDb();
     }
-    
-    public List<ProductManufacturer> ManufacturersList { get; set; }
-    public List<ProductCategory> CategoriesList { get; set; }
 
     private int _currentPage = 1;
 
@@ -123,7 +120,7 @@ public class ProductListViewModel : ReactiveObject
             this.RaisePropertyChanged();
         } 
     }
-    private readonly int _pageSize = 4;
+    private readonly int _pageSize = 10;
 
     public void PaginateList(PaginationCommand paginationCommand)
     {
@@ -192,9 +189,30 @@ public class ProductListViewModel : ReactiveObject
             (sender, category) =>
             {
                 SelectedProductCategoryItem = category;
-                GetProductsFromDb();
             };
         Config.AddWindow(window);
     }
+     
+    private ProductManufacturer _selectedProductManufacturerItem = null;
+
+    public ProductManufacturer SelectedProductManufacturerItem
+    {
+        get => _selectedProductManufacturerItem;
+        set
+        {
+            _selectedProductManufacturerItem = value;
+            this.RaisePropertyChanged();
+        }
+    }
     
+    public void SelectProductManufacturer()
+    {
+        var window = new ProductManufacturerList();
+        (window.DataContext as ProductManufacturerListViewModel).ElementSelected +=
+            (sender, manufacturer) =>
+            {
+                SelectedProductManufacturerItem = manufacturer;
+            };
+        Config.AddWindow(window);
+    }
 }

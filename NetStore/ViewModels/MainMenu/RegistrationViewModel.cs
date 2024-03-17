@@ -13,13 +13,13 @@ public class RegistrationViewModel : ReactiveObject
     public string Password { get; set; } = String.Empty;
     public string PasswordConfirm { get; set; } = String.Empty;
     public DateTimeOffset Birthdate { get; set; } = DateTimeOffset.Now;
+    private bool _isVisibleMassage = false;
+    private string _massage = String.Empty;
 
     public bool IsVisibleMassage { get => _isVisibleMassage;
         set { _isVisibleMassage = value; this.RaisePropertyChanged(); }
     }
 
-    private bool _isVisibleMassage = false;
-    
     public string Massage 
     { 
         get => _massage;
@@ -30,34 +30,32 @@ public class RegistrationViewModel : ReactiveObject
             this.RaisePropertyChanged();
         } 
     }
-
-    private string _massage = String.Empty;
     
     public void Registration()
     {
         if (!IsValidEmail())
         {
-            Massage = "Email is invalid!";
+            Massage = "Почта неверна или уже используется!";
         }
         else if (!IsValidName())
         {
-            Massage = "Name is invalid!";
+            Massage = "Должно быть имя!";
         }
         else if (!IsValidSurname())
         {
-            Massage = "Surname is invalid!";
+            Massage = "Должна быть фамилия!";
         }
         else if (!IsValidPassword())
         {
-            Massage = "Password is invalid!";
+            Massage = "Слабый пароль!";
         }
         else if (!IsMatchPasswords())
         {
-            Massage = "Passwords mismatches!";
+            Massage = "Пароли не совпадают!";
         }
         else if (!IsValidBirthdate())
         {
-            Massage = "Passwords mismatches!";
+            Massage = "Неправильная дата!";
         }
         else
         {
@@ -97,7 +95,6 @@ public class RegistrationViewModel : ReactiveObject
 
     private bool IsValidName()
     {
-            
         return !string.IsNullOrWhiteSpace(Name);
     }
     

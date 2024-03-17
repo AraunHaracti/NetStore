@@ -13,118 +13,112 @@
   </UserControl.DataContext>
   
   <Grid>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="350"/>
-      <ColumnDefinition Width="5"/>
-      <ColumnDefinition/>
-    </Grid.ColumnDefinitions>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="60"/>
-      <RowDefinition/>
-    </Grid.RowDefinitions>
-    
-    <ContentControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Background="#550">
-      <StackPanel Orientation="Horizontal" Margin="5" Background="#9994" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <TextBox Margin="5" Width="450" Watermark="Найти..." Text="{Binding SearchString, Mode=TwoWay}" VerticalContentAlignment="Center"/>
-        <Button Margin="5" Width="70" Content="Поиск" Command="{Binding Search}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-      </StackPanel>
-    </ContentControl>
-    
-    <ContentControl Grid.Row="1" Grid.Column="0" Background="#2a5" MinWidth="200">
-      <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <StackPanel Orientation="Vertical" Margin="5" Background="#256">
-          <StackPanel Orientation="Vertical" Margin="5">
-            <Label Content="Производитель"/>
-            <ComboBox Width="325" ItemsSource="{Binding ManufacturersList, Mode=TwoWay}">
-              <ComboBox.ItemTemplate>
-                <DataTemplate>
-                  <TextBlock Text="{Binding Name, Mode=TwoWay}"/>
-                </DataTemplate>
-              </ComboBox.ItemTemplate>
-            </ComboBox>
+    <Border Background="#444" CornerRadius="20" Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+      <StackPanel>
+        <ContentControl Height="60" VerticalAlignment="Top">
+          <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button Content="Назад" Command="{Binding CloseView}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+            <TextBox Width="430" Height="45" Watermark="Найти..." Text="{Binding SearchString, Mode=TwoWay}" VerticalContentAlignment="Center"/>
+            <Button Content="Поиск" Command="{Binding Search}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
           </StackPanel>
-          <StackPanel Orientation="Vertical" Margin="5">
-            <Label Content="Категория"/>
-            <Button Width="325" Content="{Binding SelectedProductCategoryItem.Name}" Command="{Binding SelectProductCategory}"/>
-          </StackPanel>
-          <StackPanel Orientation="Vertical" Margin="5">
-            <Label Content="Цена"/>
-            <StackPanel Orientation="Horizontal" Spacing="5">
-              <NumericUpDown Width="160" Watermark="От" FormatString="F2" Minimum="0" Value="{Binding PriceFrom, Mode=TwoWay}"/>
-              <NumericUpDown Width="160" Watermark="До" FormatString="F2" Minimum="0" Value="{Binding PriceTo, Mode=TwoWay}"/>  
-            </StackPanel>
-          </StackPanel>
-          <StackPanel Orientation="Vertical" Margin="5">
-            <Label Content="Количество"/>
-            <StackPanel Orientation="Horizontal" Spacing="5">
-              <NumericUpDown Width="160" Watermark="От" FormatString="F0" Minimum="0" Value="{Binding QuantityFrom, Mode=TwoWay}"/>
-              <NumericUpDown Width="160" Watermark="До" FormatString="F0" Minimum="0" Value="{Binding QuantityTo, Mode=TwoWay}"/>  
-            </StackPanel>
-          </StackPanel>
-          <StackPanel HorizontalAlignment="Center" Margin="5">
-            <Button Content="Применить фильтр" Command="{Binding Filter}"/>
-          </StackPanel>
-          <StackPanel HorizontalAlignment="Center" Margin="10">
-            <Button Content="Добавить" Command="{Binding AddItem}"/>
-            <Button Content="Редактировать" Command="{Binding EditItem}"/>
-            <Button Content="Назад" Command="{Binding CloseView}"/>
-          </StackPanel>
-        </StackPanel>
-      </ScrollViewer>
-    </ContentControl>
-    
-    <GridSplitter Grid.Column="1" Grid.Row="1" ResizeDirection="Columns" Background="#a0a"/>
-    
-    <ContentControl Grid.Row="1" Grid.Column="2" Background="#002">
-      <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto" Background="#200">
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
-          <Grid Margin="10" Background="#030">
-            <ListBox ItemsSource="{Binding ListProduct}" SelectedItem="{Binding SelectedProductItem}" Background="#004">
-              <ListBox.ItemTemplate>
-                <DataTemplate>
-                  <Border Background="#a00" CornerRadius="10">
-                    <Grid Margin="10">
-                      <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                      </Grid.ColumnDefinitions>
-                      <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                      </Grid.RowDefinitions>
-                      <TextBlock Width="500" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" FontSize="20" FontWeight="Bold" Text="{Binding Name}"></TextBlock>
-                      <TextBlock Width="400" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" FontSize="15" Text="{Binding Description}"></TextBlock>
-                      <TextBlock Width="100" Grid.Row="1" Grid.Column="2" FontSize="17" Text="{Binding Price}"></TextBlock>
-                      <TextBlock Width="100" Grid.Row="2" Grid.Column="2" FontSize="17" Text="{Binding Quantity}"></TextBlock>
-                      <TextBlock Width="200" Grid.Row="2" Grid.Column="0" FontSize="15" Text="{Binding CategoryId}"></TextBlock>
-                      <TextBlock Width="200" Grid.Row="2" Grid.Column="1" FontSize="15" Text="{Binding ManufacturerId}"></TextBlock>
-                    </Grid>
-                  </Border>
-                </DataTemplate>
-              </ListBox.ItemTemplate>
-            </ListBox>
-          </Grid>
-          <StackPanel Orientation="Horizontal" Spacing="5" VerticalAlignment="Bottom" Margin="10">
+        </ContentControl>
+        <StackPanel Orientation="Horizontal">
+          <ContentControl Name="FilterControl" IsVisible="True" HorizontalAlignment="Left">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+              <StackPanel Orientation="Vertical" Margin="5">
+                <StackPanel Orientation="Vertical" Margin="5">
+                  <TextBlock Text="Производитель" Margin="5"/>
+                  <Button Width="215" Content="{Binding SelectedProductManufacturerItem.Name}" Command="{Binding SelectProductManufacturer}"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="5">
+                  <TextBlock Text="Категория" Margin="5"/>
+                  <Button Width="215" Content="{Binding SelectedProductCategoryItem.Name}" Command="{Binding SelectProductCategory}"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="5">
+                  <TextBlock Text="Цена" Margin="5"/>
+                  <StackPanel Orientation="Horizontal" Spacing="5">
+                    <NumericUpDown Width="100" Watermark="От" FormatString="F2" Minimum="0" Value="{Binding PriceFrom, Mode=TwoWay}"/>
+                    <NumericUpDown Width="100" Watermark="До" FormatString="F2" Minimum="0" Value="{Binding PriceTo, Mode=TwoWay}"/>  
+                  </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="5">
+                  <TextBlock Text="Количество" Margin="5"/>
+                  <StackPanel Orientation="Horizontal" Spacing="5">
+                    <NumericUpDown Width="100" Watermark="От" FormatString="F0" Minimum="0" Value="{Binding QuantityFrom, Mode=TwoWay}"/>
+                    <NumericUpDown Width="100" Watermark="До" FormatString="F0" Minimum="0" Value="{Binding QuantityTo, Mode=TwoWay}"/>  
+                  </StackPanel>
+                </StackPanel>
+                <StackPanel HorizontalAlignment="Center" Margin="5">
+                  <Button Content="Применить фильтр" Command="{Binding Filter}"/>
+                </StackPanel>
+                <StackPanel HorizontalAlignment="Center" Margin="10">
+                  <StackPanel Orientation="Horizontal" Margin="5" IsVisible="False" Name="PermissionControl">
+                    <Button Content="Добавить" Command="{Binding AddItem}"/>
+                    <Button Content="Редактировать" Command="{Binding EditItem}"/>  
+                  </StackPanel>
+                </StackPanel>
+              </StackPanel>
+            </ScrollViewer>
+          </ContentControl>
+      
+          <ContentControl>
+            <Button Width="10" Height="40" Click="FilterControl_Btn_OnClick" Background="#777"/>
+          </ContentControl>
+        
+          <ContentControl Grid.Row="1" Grid.Column="2">
+            <ScrollViewer VerticalScrollBarVisibility="Visible">
+              <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
+                <Grid Margin="10">
+                  <ListBox ItemsSource="{Binding ListProduct}" SelectedItem="{Binding SelectedProductItem}">
+                    <ListBox.ItemTemplate>
+                      <DataTemplate>
+                        <Border Background="#999" CornerRadius="10">
+                          <Grid Margin="10">
+                            <Grid.ColumnDefinitions>
+                              <ColumnDefinition/>
+                              <ColumnDefinition/>
+                              <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                              <RowDefinition/>
+                              <RowDefinition/>
+                              <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Width="500" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" FontSize="20" FontWeight="Bold" Text="{Binding Name}"></TextBlock>
+                            <TextBlock Width="400" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" FontSize="15" Text="{Binding Description}"></TextBlock>
+                            <TextBlock Width="100" Grid.Row="1" Grid.Column="2" FontSize="17" Text="{Binding Price}"></TextBlock>
+                            <TextBlock Width="100" Grid.Row="2" Grid.Column="2" FontSize="17" Text="{Binding Quantity}"></TextBlock>
+                            <TextBlock Width="200" Grid.Row="2" Grid.Column="0" FontSize="15" Text="{Binding CategoryId}"></TextBlock>
+                            <TextBlock Width="200" Grid.Row="2" Grid.Column="1" FontSize="15" Text="{Binding ManufacturerId}"></TextBlock>
+                          </Grid>
+                        </Border>
+                      </DataTemplate>
+                    </ListBox.ItemTemplate>
+                  </ListBox>
+                </Grid>
+                <StackPanel Orientation="Horizontal" Spacing="5" VerticalAlignment="Bottom" Margin="10">
 
-            <Button Content="&lt;&lt;" Command="{Binding PaginateList}" CommandParameter="{x:Static mn:PaginationCommand.First}"/>
-            <Button Content="&lt;" Command="{Binding PaginateList}" CommandParameter="{x:Static mn:PaginationCommand.Previous}"/>  
-          
-            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
-              <Run Text="{Binding CurrentPage}"/>
-              <Run Text="/"/>
-              <Run Text="{Binding TotalPage}"/>
-            </TextBlock>
+                  <Button Content="&lt;&lt;" Command="{Binding PaginateList}" CommandParameter="{x:Static mn:PaginationCommand.First}"/>
+                  <Button Content="&lt;" Command="{Binding PaginateList}" CommandParameter="{x:Static mn:PaginationCommand.Previous}"/>  
+                
+                  <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
+                    <Run Text="{Binding CurrentPage}"/>
+                    <Run Text="/"/>
+                    <Run Text="{Binding TotalPage}"/>
+                  </TextBlock>
+                  
+                  <Button Content="&gt;" Command="{Binding PaginateList}" CommandParameter="{x:Static mn:PaginationCommand.Next}"/>
+                  <Button Content="&gt;&gt;" Command="{Binding PaginateList}" CommandParameter="{x:Static mn:PaginationCommand.Last}"/>  
             
-            <Button Content="&gt;" Command="{Binding PaginateList}" CommandParameter="{x:Static mn:PaginationCommand.Next}"/>
-            <Button Content="&gt;&gt;" Command="{Binding PaginateList}" CommandParameter="{x:Static mn:PaginationCommand.Last}"/>  
-        
-          </StackPanel>
-        
+                </StackPanel>
+            
+              </StackPanel>
+            </ScrollViewer>
+          </ContentControl>
         </StackPanel>
-      </ScrollViewer>
-    </ContentControl>
+      </StackPanel>
+    </Border>
+    
   </Grid>
   
 </UserControl>

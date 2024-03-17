@@ -80,6 +80,19 @@ public class ProductManufacturerListViewModel : ReactiveObject
 
     public ProductManufacturer SelectedProductManufacturer { get; set; }
     
+    public event EventHandler<ProductManufacturer> ElementSelected;
+
+    public void SelectElement()
+    {
+        ElementSelected?.Invoke(this, SelectedProductManufacturer);
+        CloseView();
+    }
+
+    public void CloseView()
+    {
+        Config.SubWindow();
+    }
+    
     public void PaginateList(PaginationCommand paginationCommand)
     {
         switch (paginationCommand)
@@ -113,5 +126,4 @@ public class ProductManufacturerListViewModel : ReactiveObject
         if (TotalPage == 0)
             CurrentPage = 0;
     }
-    
 }

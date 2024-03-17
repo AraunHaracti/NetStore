@@ -2,8 +2,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="NetStore.App"
              xmlns:local="using:NetStore"
-             RequestedThemeVariant="Default">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+             RequestedThemeVariant="Dark"
+             xmlns:sukiUi="clr-namespace:SukiUI;assembly=SukiUI">
 
     <Application.DataTemplates>
         <local:ViewLocator/>
@@ -11,5 +11,6 @@
   
     <Application.Styles>
         <FluentTheme />
+        <sukiUi:SukiTheme ThemeColor="Blue" />  
     </Application.Styles>
 </Application>

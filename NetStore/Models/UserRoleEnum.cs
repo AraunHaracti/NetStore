@@ -7,4 +7,5 @@ public enum UserRoleEnum
     Guest = 3,
     Seller = 4,
     Booker = 5,
+    Merchandiser = 6,
 }
